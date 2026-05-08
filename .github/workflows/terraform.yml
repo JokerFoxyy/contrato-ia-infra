@@ -2,9 +2,9 @@ name: Terraform
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, develop]
   push:
-    branches: [main]
+    branches: [main, develop, 'feature/**']
   workflow_dispatch:
     inputs:
       environment:
@@ -67,7 +67,11 @@ jobs:
         run: terraform plan -no-color -out=tfplan
         env:
           TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
+          TF_VAR_db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
           TF_VAR_claude_api_key: ${{ secrets.TF_VAR_CLAUDE_API_KEY }}
+          TF_VAR_keycloak_issuer_uri: ${{ secrets.TF_VAR_KEYCLOAK_ISSUER_URI }}
+          TF_VAR_stripe_secret_key: ${{ secrets.TF_VAR_STRIPE_SECRET_KEY }}
+          TF_VAR_stripe_webhook_secret: ${{ secrets.TF_VAR_STRIPE_WEBHOOK_SECRET }}
 
       - name: Comment PR with plan
         if: github.event_name == 'pull_request'
@@ -120,4 +124,8 @@ jobs:
         run: terraform apply -auto-approve
         env:
           TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
+          TF_VAR_db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
           TF_VAR_claude_api_key: ${{ secrets.TF_VAR_CLAUDE_API_KEY }}
+          TF_VAR_keycloak_issuer_uri: ${{ secrets.TF_VAR_KEYCLOAK_ISSUER_URI }}
+          TF_VAR_stripe_secret_key: ${{ secrets.TF_VAR_STRIPE_SECRET_KEY }}
+          TF_VAR_stripe_webhook_secret: ${{ secrets.TF_VAR_STRIPE_WEBHOOK_SECRET }}

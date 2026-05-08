@@ -103,6 +103,18 @@ resource "aws_iam_role_policy" "ec2_permissions" {
           "secretsmanager:GetSecretValue"
         ]
         Resource = var.secrets_arn
+      },
+      {
+        Sid    = "CodeDeployS3"
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ]
+        Resource = [
+          "arn:aws:s3:::${var.codedeploy_bucket}",
+          "arn:aws:s3:::${var.codedeploy_bucket}/*"
+        ]
       }
     ]
   })
