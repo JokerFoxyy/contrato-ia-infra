@@ -27,3 +27,13 @@ output "cloudwatch_log_group" {
   description = "CloudWatch log group name"
   value       = module.compute.cloudwatch_log_group_name
 }
+
+output "codedeploy_app_name" {
+  description = "CodeDeploy application name"
+  value       = module.codedeploy.app_name
+}
+
+output "codedeploy_deployment_group" {
+  description = "CodeDeploy deployment group name"
+  value       = module.codedeploy.deployment_group_name
+}
