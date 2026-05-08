@@ -124,3 +124,40 @@ module "compute" {
   cloudwatch_log_group_name = "/${var.project}/${var.environment}/backend"
   log_retention_days        = 30
 }
+
+# ──────────────────────────────────────────────────────────────────────────────
+# CodeDeploy (automated deploys from GitHub Actions — free for EC2)
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Deploy Artifacts (S3 bucket for CodeDeploy)
+# ──────────────────────────────────────────────────────────────────────────────
+
+resource "aws_s3_bucket" "deploy_artifacts" {
+  bucket = "${var.project}-deploy-artifacts"
+
+  tags = {
+    Name        = "${var.project}-deploy-artifacts"
+    Environment = var.environment
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "deploy_artifacts" {
+  bucket = aws_s3_bucket.deploy_artifacts.id
+
+  rule {
+    id     = "cleanup-old-artifacts"
+    status = "Enabled"
+
+    expiration {
+      days = 30
+    }
+  }
+}
+
+module "codedeploy" {
+  source = "../../modules/codedeploy"
+
+  project     = var.project
+  environment = var.environment
+}

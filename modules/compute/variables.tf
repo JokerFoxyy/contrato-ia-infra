@@ -58,3 +58,9 @@ variable "log_retention_days" {
   type        = number
   default     = 30
 }
+
+variable "codedeploy_bucket" {
+  description = "S3 bucket for CodeDeploy artifacts"
+  type        = string
+  default     = "contrato-ia-deploy-artifacts"
+}

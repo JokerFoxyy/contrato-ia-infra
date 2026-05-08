@@ -32,7 +32,18 @@ curl -SL "https://github.com/docker/compose/releases/latest/download/docker-comp
 chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
 # ──────────────────────────────────────────────────────────────────────────────
-# 4. Install and configure CloudWatch Agent
+# 4. Install CodeDeploy Agent
+# ──────────────────────────────────────────────────────────────────────────────
+dnf install -y ruby wget
+cd /tmp
+wget "https://aws-codedeploy-${aws_region}.s3.${aws_region}.amazonaws.com/latest/install"
+chmod +x ./install
+./install auto
+systemctl enable codedeploy-agent
+systemctl start codedeploy-agent
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 5. Install and configure CloudWatch Agent
 # ──────────────────────────────────────────────────────────────────────────────
 dnf install -y amazon-cloudwatch-agent
 

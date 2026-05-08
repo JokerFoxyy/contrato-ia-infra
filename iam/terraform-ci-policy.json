@@ -111,12 +111,12 @@
         "s3:GetBucketLocation",
         "s3:GetBucketVersioning",
         "s3:PutBucketVersioning",
-        "s3:GetBucketEncryption",
-        "s3:PutBucketEncryption",
+        "s3:GetEncryptionConfiguration",
+        "s3:PutEncryptionConfiguration",
         "s3:GetBucketPublicAccessBlock",
         "s3:PutBucketPublicAccessBlock",
-        "s3:GetBucketLifecycleConfiguration",
-        "s3:PutBucketLifecycleConfiguration",
+        "s3:GetLifecycleConfiguration",
+        "s3:PutLifecycleConfiguration",
         "s3:GetBucketCORS",
         "s3:PutBucketCORS",
         "s3:GetBucketPolicy",
@@ -195,6 +195,8 @@
         "iam:DeleteRolePolicy",
         "iam:ListRolePolicies",
         "iam:ListAttachedRolePolicies",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
         "iam:ListInstanceProfilesForRole",
         "iam:CreateInstanceProfile",
         "iam:DeleteInstanceProfile",
@@ -234,6 +236,48 @@
         "dynamodb:DescribeTable"
       ],
       "Resource": "arn:aws:dynamodb:sa-east-1:*:table/contrato-ia-terraform-locks"
+    },
+    {
+      "Sid": "CodeDeployManagement",
+      "Effect": "Allow",
+      "Action": [
+        "codedeploy:CreateApplication",
+        "codedeploy:DeleteApplication",
+        "codedeploy:GetApplication",
+        "codedeploy:GetApplicationRevision",
+        "codedeploy:RegisterApplicationRevision",
+        "codedeploy:CreateDeploymentGroup",
+        "codedeploy:DeleteDeploymentGroup",
+        "codedeploy:GetDeploymentGroup",
+        "codedeploy:UpdateDeploymentGroup",
+        "codedeploy:CreateDeployment",
+        "codedeploy:GetDeployment",
+        "codedeploy:GetDeploymentConfig",
+        "codedeploy:ListDeployments",
+        "codedeploy:StopDeployment",
+        "codedeploy:TagResource",
+        "codedeploy:UntagResource",
+        "codedeploy:ListTagsForResource"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "sa-east-1"
+        }
+      }
+    },
+    {
+      "Sid": "CodeDeployS3Artifacts",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::contrato-ia-deploy-artifacts",
+        "arn:aws:s3:::contrato-ia-deploy-artifacts/*"
+      ]
     }
   ]
 }
