@@ -1,6 +1,6 @@
 ################################################################################
 # ContratoIA — Production Environment
-# Setup econômico: EC2 t3.small + RDS t3.micro (~$23/mês)
+# Setup econômico: EC2 t3.small + PostgreSQL via Docker (~$16/mês)
 ################################################################################
 
 terraform {
@@ -78,23 +78,9 @@ module "queue" {
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Database (RDS PostgreSQL)
+# Database — PostgreSQL roda via Docker na EC2 (economia ~$28/mês vs RDS)
+# O módulo database (RDS) fica disponível para migração futura.
 # ──────────────────────────────────────────────────────────────────────────────
-
-module "database" {
-  source = "../../modules/database"
-
-  project     = var.project
-  environment = var.environment
-
-  instance_class = var.db_instance_class
-  db_username    = var.db_username
-  db_password    = var.db_password
-  multi_az       = false # Economico: single-AZ
-
-  subnet_ids        = module.networking.private_subnet_ids
-  security_group_id = module.networking.rds_security_group_id
-}
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Secrets Manager
@@ -106,7 +92,7 @@ module "secrets" {
   project     = var.project
   environment = var.environment
 
-  db_url              = module.database.jdbc_url
+  db_url              = "jdbc:postgresql://localhost:5432/contratoiadb"
   db_username         = var.db_username
   db_password         = var.db_password
   claude_api_key      = var.claude_api_key

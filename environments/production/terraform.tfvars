@@ -14,12 +14,8 @@ project     = "contrato-ia"
 environment = "production"
 aws_region  = "sa-east-1"
 
-# Compute
+# Compute — EC2 roda backend + PostgreSQL via Docker
 ec2_instance_type = "t3.small"
-
-# Database
-db_instance_class = "db.t3.micro"
-db_username       = "contrato_user"
 
 # Networking
 cors_origins      = ["https://contrato-ia-frontend.vercel.app"]

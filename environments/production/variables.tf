@@ -44,22 +44,17 @@ variable "ec2_key_pair_name" {
   default     = ""
 }
 
-# ── Database ──────────────────────────────────────────────────────────────────
-
-variable "db_instance_class" {
-  description = "RDS instance class"
-  type        = string
-  default     = "db.t3.micro"
-}
+# ── Database (PostgreSQL via Docker na EC2) ───────────────────────────────────
 
 variable "db_username" {
-  description = "RDS master username"
+  description = "PostgreSQL username"
   type        = string
   sensitive   = true
+  default     = "contrato_user"
 }
 
 variable "db_password" {
-  description = "RDS master password"
+  description = "PostgreSQL password"
   type        = string
   sensitive   = true
 }
