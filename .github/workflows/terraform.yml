@@ -36,7 +36,11 @@ jobs:
   plan:
     name: "Terraform Plan (${{ github.event.inputs.environment || 'production' }})"
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' || github.event.inputs.action == 'plan' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    # Não roda plan em PRs de forks (segurança: fork não tem acesso aos secrets)
+    if: |
+      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) ||
+      github.event.inputs.action == 'plan' ||
+      (github.event_name == 'push')
     timeout-minutes: 10
 
     steps:
